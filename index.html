@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Event App</title>
+</head>
+<body>
+  <h1>Event Staff Manager</h1>
+  <button onclick="addStaff()">Add Staff</button>
+
+  <ul id="staffList"></ul>
+
+  <script>
+    function addStaff() {
+      const name = prompt("Enter staff name:");
+      if(name) {
+        const li = document.createElement("li");
+        li.textContent = name;
+        document.getElementById("staffList").appendChild(li);
+      }
+    }
+  </script>
+</body>
+</html>
