@@ -1,29 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My Event App</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f4f4f4;
+    }
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 300px;
+    }
+    input, button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Event Staff Manager</h1>
-  <button onclick="addStaff()">Add Staff</button>
-
-  <ul id="staffList"></ul>
+  <div class="container">
+    <h2>Create Account</h2>
+    <input type="text" id="name" placeholder="Full Name" />
+    <input type="text" id="phone" placeholder="Phone Number" />
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="signUp()">Sign Up</button>
+    <p id="message"></p>
+  </div>
 
   <script>
-    function addStaff() {
-      const name = prompt("Enter staff name:");
-      if(name) {
-        const li = document.createElement("li");
-        li.textContent = name;
-        document.getElementById("staffList").appendChild(li);
+    const supabaseUrl = 'YOUR_SUPABASE_URL';
+    const supabaseKey = 'YOUR_SUPABASE_ANON_KEY';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    async function signUp() {
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const message = document.getElementById('message');
+
+      message.textContent = 'Creating account...';
+
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+          data: {
+            name: name,
+            phone: phone
+          }
+        }
+      });
+
+      if (error) {
+        message.textContent = error.message;
+        return;
       }
+
+      message.textContent = 'Account created! Check your email to confirm.';
     }
   </script>
-
-  <p>Welcome to AppBuilder26 a customized interacive client and team portal to make your business flow with less work.</p>
 </body>
 </html>
